@@ -8,7 +8,7 @@ const LandingPage = () => {
     <div className="landing-page">
       <h1>Welcome to QuizMeAnything</h1>
       <p>Test your knowledge on any topic powered by AI!</p>
-      <button onClick={() => navigate('/quiz')}>Start Quiz</button>
+      <button className="primary-btn" onClick={() => navigate('/quiz')}>Start Quiz</button>
     </div>
   );
 };

@@ -48,20 +48,29 @@ const QuizGame = ({ questions, onReset }) => {
   }
 
   if (showScore) {
+    const percentage = (score / questions.length) * 100;
     return (
-      <div className="score-section">
+      <div className="score-section card-glass">
         <h2>Quiz Completed!</h2>
-        <p>You scored {score} out of {questions.length}</p>
-        <button onClick={onReset}>Play Again</button>
+        <div className="score-circle" style={{ '--score-percent': `${percentage}%` }}>
+            <div className="score-text">{score}/{questions.length}</div>
+        </div>
+        <p className="score-message">
+            {percentage >= 80 ? 'Excellent!' : percentage >= 50 ? 'Good Job!' : 'Keep Learning!'}
+        </p>
+        <button onClick={onReset} className="primary-btn">Play Again</button>
       </div>
     );
   }
 
   return (
-    <div className="quiz-game">
+    <div className="quiz-game card-glass">
       <div className="question-section">
-        <div className="question-count">
-          <span>Question {currentQuestionIndex + 1}</span>/{questions.length}
+        <div className="question-header">
+            <div className="question-count">
+            Question <span>{currentQuestionIndex + 1}</span>/{questions.length}
+            </div>
+            <div className="score-badge">Score: {score}</div>
         </div>
         <div className="question-text">{currentQuestion.question}</div>
       </div>

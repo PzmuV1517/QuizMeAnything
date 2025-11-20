@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const generateQuestions = async (topic, numQuestions, userApiKey) => {
+export const generateQuestions = async (topic, grade, numQuestions, userApiKey) => {
   const apiKey = userApiKey || import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
@@ -10,7 +10,7 @@ export const generateQuestions = async (topic, numQuestions, userApiKey) => {
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-  const prompt = `Generate ${numQuestions} multiple choice questions about "${topic}". 
+  const prompt = `Generate ${numQuestions} multiple choice questions about "${topic}" suitable for a "${grade}" level. 
   Return the response strictly as a valid JSON array of objects. 
   Each object must have the following structure:
   {

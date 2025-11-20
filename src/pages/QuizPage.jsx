@@ -9,11 +9,11 @@ const QuizPage = () => {
   const [error, setError] = useState(null);
   const [gameStarted, setGameStarted] = useState(false);
 
-  const handleStartQuiz = async (topic, numQuestions) => {
+  const handleStartQuiz = async (topic, grade, numQuestions) => {
     setLoading(true);
     setError(null);
     try {
-      const generatedQuestions = await generateQuestions(topic, numQuestions);
+      const generatedQuestions = await generateQuestions(topic, grade, numQuestions);
       setQuestions(generatedQuestions);
       setGameStarted(true);
     } catch (err) {
