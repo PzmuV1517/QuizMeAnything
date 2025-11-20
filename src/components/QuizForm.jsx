@@ -4,13 +4,34 @@ const QuizForm = ({ onStartQuiz, loading }) => {
   const [topic, setTopic] = useState('');
   const [grade, setGrade] = useState('');
   const [numQuestions, setNumQuestions] = useState(5);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareUrl, setShareUrl] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onStartQuiz(topic, grade, numQuestions);
   };
 
+  const handleShare = () => {
+    if (!topic || !grade || !numQuestions) {
+        alert("Please fill in all fields to generate a link.");
+        return;
+    }
+    const url = `${window.location.origin}/quiz?topic=${encodeURIComponent(topic)}&grade=${encodeURIComponent(grade)}&numQuestions=${numQuestions}`;
+    setShareUrl(url);
+    setShowShareModal(true);
+    setCopySuccess(false);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  };
+
   return (
+    <>
     <div className="quiz-form-container card-glass">
       <h2>Setup Your Quiz</h2>
       <form onSubmit={handleSubmit}>
@@ -51,8 +72,29 @@ const QuizForm = ({ onStartQuiz, loading }) => {
         <button type="submit" disabled={loading} className="start-btn">
           {loading ? 'Generating Questions...' : 'Quiz Me'}
         </button>
+        
+        <button type="button" onClick={handleShare} className="share-btn" disabled={loading}>
+            Share Quiz Link
+        </button>
       </form>
     </div>
+
+    {showShareModal && (
+        <div className="modal-overlay">
+          <div className="modal-content card-glass">
+            <h3>Share Quiz</h3>
+            <p>Send this link to your students:</p>
+            <div className="url-box">
+                <input type="text" value={shareUrl} readOnly />
+                <button onClick={copyToClipboard} className="copy-btn">
+                    {copySuccess ? 'Copied!' : 'Copy'}
+                </button>
+            </div>
+            <button onClick={() => setShowShareModal(false)} className="close-btn">Close</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

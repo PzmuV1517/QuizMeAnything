@@ -276,6 +276,51 @@ p {
   opacity: 0.5;
 }
 
+/* Navigation & Actions */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.share-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-btn:hover:not(:disabled) {
+  background: rgba(255, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+.share-btn:disabled {
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
 /* Score Section */
 .score-section {
   text-align: center;
@@ -328,6 +373,78 @@ p {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  animation: scaleIn 0.2s ease-out;
+}
+
+.modal-content h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.url-box {
+  display: flex;
+  gap: 10px;
+  margin: 1.5rem 0;
+}
+
+.url-box input {
+  flex: 1;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.copy-btn {
+  padding: 0 1.5rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: var(--primary-hover);
+}
+
+.close-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
 
 /* Animations */
