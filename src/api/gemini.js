@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export const generateQuestions = async (topic, grade, numQuestions, userApiKey) => {
+export const generateQuestions = async (topic, grade, numQuestions, questionType, tone, userApiKey) => {
   const apiKey = userApiKey || import.meta.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
@@ -10,12 +10,18 @@ export const generateQuestions = async (topic, grade, numQuestions, userApiKey) 
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-  const prompt = `Generate ${numQuestions} multiple choice questions about "${topic}" suitable for a "${grade}" level. 
+  const typeDescription = questionType === 'mixed' ? 'mixed multiple choice and true/false' : questionType;
+  const optionsInstruction = questionType === 'true-false' 
+    ? '["True", "False"]' 
+    : '["Option A", "Option B", "Option C", "Option D"] (or ["True", "False"] if it is a True/False question)';
+
+  const prompt = `Generate ${numQuestions} ${typeDescription} questions about "${topic}" suitable for a "${grade}" level. 
+  The tone of the questions should be ${tone}.
   Return the response strictly as a valid JSON array of objects. 
   Each object must have the following structure:
   {
     "question": "The question text",
-    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "options": ${optionsInstruction},
     "correctAnswer": "The correct option text (must match one of the options exactly)"
   }
   Do not include any markdown formatting like \`\`\`json or \`\`\`. Just the raw JSON array.`;

@@ -13,11 +13,11 @@ const QuizPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleStartQuiz = async (topic, grade, numQuestions) => {
+  const handleStartQuiz = async (topic, grade, numQuestions, questionType = 'multiple-choice', tone = 'standard') => {
     setLoading(true);
     setError(null);
     try {
-      const generatedQuestions = await generateQuestions(topic, grade, numQuestions);
+      const generatedQuestions = await generateQuestions(topic, grade, numQuestions, questionType, tone);
       setQuestions(generatedQuestions);
       setGameStarted(true);
     } catch (err) {
@@ -31,9 +31,11 @@ const QuizPage = () => {
     const topic = searchParams.get('topic');
     const grade = searchParams.get('grade');
     const numQuestions = searchParams.get('numQuestions');
+    const type = searchParams.get('type') || 'multiple-choice';
+    const tone = searchParams.get('tone') || 'standard';
 
     if (topic && grade && numQuestions && !gameStarted && !loading) {
-        handleStartQuiz(topic, grade, parseInt(numQuestions));
+        handleStartQuiz(topic, grade, parseInt(numQuestions), type, tone);
     }
   }, [searchParams]);
 
