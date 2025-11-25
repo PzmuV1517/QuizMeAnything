@@ -10,10 +10,20 @@ export const generateQuestions = async (topic, grade, numQuestions, questionType
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-  const typeDescription = questionType === 'mixed' ? 'mixed multiple choice and true/false' : questionType;
-  const optionsInstruction = questionType === 'true-false' 
-    ? '["True", "False"]' 
-    : '["Option A", "Option B", "Option C", "Option D"] (or ["True", "False"] if it is a True/False question)';
+  let typeDescription = questionType;
+  let optionsInstruction = '';
+
+  if (questionType === 'true-false') {
+    typeDescription = 'True/False';
+    optionsInstruction = '["True", "False"]';
+  } else if (questionType === 'mixed') {
+    typeDescription = 'mixed Multiple Choice and True/False';
+    optionsInstruction = '["Option A", "Option B", "Option C", "Option D"] for multiple choice or ["True", "False"] for true/false';
+  } else {
+    // multiple-choice
+    typeDescription = 'Multiple Choice (with 4 options)';
+    optionsInstruction = '["Option A", "Option B", "Option C", "Option D"]';
+  }
 
   const prompt = `Generate ${numQuestions} ${typeDescription} questions about "${topic}" suitable for a "${grade}" level. 
   The tone of the questions should be ${tone}.
@@ -24,6 +34,7 @@ export const generateQuestions = async (topic, grade, numQuestions, questionType
     "options": ${optionsInstruction},
     "correctAnswer": "The correct option text (must match one of the options exactly)"
   }
+  IMPORTANT: If the type is Multiple Choice, you MUST provide exactly 4 options. Do not use True/False unless the type is explicitly True/False or Mixed.
   Do not include any markdown formatting like \`\`\`json or \`\`\`. Just the raw JSON array.`;
 
   try {
