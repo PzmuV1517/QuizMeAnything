@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const QuizGame = ({ questions, onReset }) => {
+const QuizGame = ({ questions, onReset, onComplete }) => {
+  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(0);
@@ -14,28 +16,13 @@ const QuizGame = ({ questions, onReset }) => {
     setSelectedAnswer(option);
   };
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === currentQuestion.correctAnswer) {
-      setScore(score + 1);
-    }
-
-    const nextQuestion = currentQuestionIndex + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestionIndex(nextQuestion);
-      setSelectedAnswer(null);
-      setIsAnswerChecked(false);
-    } else {
-      setShowScore(true);
-    }
-  };
-  
   const checkAnswer = () => {
       setIsAnswerChecked(true);
       if (selectedAnswer === currentQuestion.correctAnswer) {
           setScore(prev => prev + 1);
       }
-  }
-  
+  };
+
   const nextAfterCheck = () => {
       const nextQuestion = currentQuestionIndex + 1;
       if (nextQuestion < questions.length) {
@@ -44,6 +31,9 @@ const QuizGame = ({ questions, onReset }) => {
         setIsAnswerChecked(false);
       } else {
         setShowScore(true);
+        if (onComplete) {
+            onComplete(score, questions.length);
+        }
       }
   }
 
@@ -58,7 +48,14 @@ const QuizGame = ({ questions, onReset }) => {
         <p className="score-message">
             {percentage >= 80 ? 'Excellent!' : percentage >= 50 ? 'Good Job!' : 'Keep Learning!'}
         </p>
-        <button onClick={onReset} className="primary-btn">Play Again</button>
+        {onComplete ? (
+          <>
+            <p style={{marginBottom: '1.5rem'}}>Thank you for playing!</p>
+            <button onClick={() => navigate('/')} className="primary-btn">Return to Home</button>
+          </>
+        ) : (
+            <button onClick={onReset} className="primary-btn">Play Again</button>
+        )}
       </div>
     );
   }

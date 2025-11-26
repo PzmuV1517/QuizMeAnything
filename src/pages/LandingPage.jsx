@@ -6,7 +6,10 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      <button className="mini-quiz-btn" onClick={() => navigate('/quiz')}>Quiz Me</button>
+      <div className="landing-header">
+        <button className="mini-quiz-btn" onClick={() => navigate('/quiz')}>Quiz Me</button>
+        <button className="teacher-btn" onClick={() => navigate('/login')}>Teacher Portal</button>
+      </div>
       <h1>Welcome to QuizMeAnything</h1>
       <p className="subtitle">The ultimate AI-powered quiz generator. Test your knowledge on absolutely any topic imaginable.</p>
       
